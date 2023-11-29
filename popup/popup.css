@@ -1,0 +1,32 @@
+body {
+    width: 20rem;
+}
+.website-configs-container,
+.wesbite-config {
+    list-style: none;
+    padding: 0;
+}
+
+.website-configs-container > li {
+    background-color: #e0e0e0;
+}
+
+.website-config-label {
+    font-weight: bold;
+}
+
+.website-configs-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.wesbite-config {
+    padding: 0.5rem;
+}
+
+.config-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}

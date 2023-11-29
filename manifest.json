@@ -1,0 +1,36 @@
+{
+    "manifest_version": 3,
+    "name": "Sniper",
+    "version": "0.0.1",
+    "content_scripts": [
+        {
+            "matches": [
+                "https://old.reddit.com/*"
+            ],
+            "js": [
+                "scripts/content-script.js"
+            ]
+        }
+    ],
+    "background": {
+        "service_worker": "service-worker.js",
+        "type": "module"
+    },
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "media/background.ogg"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
+        }
+    ],
+    "permissions": [
+        "storage",
+        "background"
+    ],
+    "action": {
+        "default_popup": "popup/popup.html"
+    }
+}

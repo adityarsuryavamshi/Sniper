@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="popup.css">
+    <title>Sniper</title>
+</head>
+
+<body>
+    <template id="saved-site-config">
+        <li>
+            <ul class="wesbite-config">
+                <li><span class="website-config-label">Site: </span> <span class="website-config-value"></span></li>
+                <li><span class="website-config-label">Reload interval: </span> <span class="website-config-value"></span></li>
+                <li><span class="website-config-label">Element to check: </span> <span class="website-config-value"></span></li>
+                <li><span class="website-config-label">Element to act: </span> <span class="website-config-value"></span></li>
+                <li><span class="website-config-label">Action to perform: </span> <span class="website-config-value"></span></li>
+                <li><span class="website-config-label">Action arguments: </span> <span class="website-config-value"></span></li>
+            </ul>
+        </li>
+    </template>
+    <h1>Sniper</h1>
+    <h2>Saved Website Configs</h2>
+    <ul class="website-configs-container">
+
+    </ul>
+    <h2>New Config</h2>
+    <form class="config-form">
+        <label for="site-regex">Site (supports regex)</label>
+        <input type="text" name="site-regex" id="site-regex" required>
+
+        <label for="reload-interval">Reload interval</label>
+        <input type="number" name="reload-interval" id="reload-interval" required>
+
+        <label for="element-to-check">Element to check</label>
+        <input type="text" name="element-to-check" id="element-to-check" required>
+
+        <label for="element-to-act">Element to act</label>
+        <input type="text" name="element-to-act" id="element-to-act" required>
+
+        <label for="element-action">Action to perform</label>
+        <input type="text" name="element-action" id="element-action" required>
+
+        <label for="element-action-arguments">Element action arguments (comma seperated)</label>
+        <input type="text" name="element-action-arguments" id="element-action-arguments">
+
+        <button type="submit" id="save-config">Save Config</button>
+    </form>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>
