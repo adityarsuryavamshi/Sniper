@@ -1,22 +1,39 @@
-chrome.runtime.onInstalled.addListener(() => {
-    chrome.storage.local.clear();
-    chrome.storage.local.set({ sniperWebsiteConfigs: [] })
-    chrome.storage.local.set({
-        config: {
-            reloadIntervalInSeconds: 30,
-            elementToCheck: '#siteTable .thing .entry .expando-button',
-            elementToAct: "#siteTable .thing .entry .expando-button",
-            action: "click",
-            argument: []
-        }
-    })
-})
-
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    console.log(`Received Message: ${message}`)
-    if (message.reason === 'getConfig') {
-        // Can't have this async/awaited since the listener can't be async for some reason
-        chrome.storage.local.get('config').then(sendResponse);
-        return true;
+chrome.runtime.onInstalled.addListener(({ reason }) => {
+    if (reason === 'install') {
+        chrome.storage.local.set({ sniperWebsiteConfigs: [] });
     }
 })
+
+
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    switch (message.request) {
+        case 'getAllConfigs':
+            // Async Response with onMessage is a bit weird see for example https://stackoverflow.com/questions/44056271/chrome-runtime-onmessage-response-with-async-await
+            chrome.storage.local.get('sniperWebsiteConfigs')
+                .then(({ sniperWebsiteConfigs }) => sendResponse(sniperWebsiteConfigs));
+            return true;
+            break;
+        case 'addNewConfig':
+            addNewConfig(message.payload)
+            break;
+        case 'clearConfig':
+            chrome.storage.local.set({ sniperWebsiteConfigs: [] });
+            break;
+
+
+    }
+});
+
+async function addNewConfig(websiteConfig) {
+    const { sniperWebsiteConfigs } = await chrome.storage.local.get('sniperWebsiteConfigs');
+    sniperWebsiteConfigs.push(websiteConfig);
+    chrome.storage.local.set({ sniperWebsiteConfigs });
+    chrome.scripting.registerContentScripts([
+        {
+            id: websiteConfig.configID,
+            matches: [websiteConfig.siteRegex],
+            js: ["scripts/content-script.js"]
+        }
+    ])
+}

@@ -12,12 +12,34 @@
     <template id="saved-site-config">
         <li>
             <ul class="wesbite-config">
-                <li><span class="website-config-label">Site: </span> <span class="website-config-value"></span></li>
-                <li><span class="website-config-label">Reload interval: </span> <span class="website-config-value"></span></li>
-                <li><span class="website-config-label">Element to check: </span> <span class="website-config-value"></span></li>
-                <li><span class="website-config-label">Element to act: </span> <span class="website-config-value"></span></li>
-                <li><span class="website-config-label">Action to perform: </span> <span class="website-config-value"></span></li>
-                <li><span class="website-config-label">Action arguments: </span> <span class="website-config-value"></span></li>
+                <li>
+                    <span class="website-config-label">Config ID: </span>
+                    <span class="website-config-value"></span>
+                </li>
+                <li>
+                    <span class="website-config-label">Site: </span>
+                    <span class="website-config-value"></span>
+                </li>
+                <li>
+                    <span class="website-config-label">Reload interval:</span>
+                    <span class="website-config-value"></span>
+                </li>
+                <li>
+                    <span class="website-config-label">Element to check: </span>
+                    <span class="website-config-value"></span>
+                </li>
+                <li>
+                    <span class="website-config-label">Element to act: </span>
+                    <span class="website-config-value"></span>
+                </li>
+                <li>
+                    <span class="website-config-label">Action to perform: </span>
+                    <span class="website-config-value"></span>
+                </li>
+                <li>
+                    <span class="website-config-label">Action arguments: </span>
+                    <span class="website-config-value"></span>
+                </li>
             </ul>
         </li>
     </template>
@@ -26,25 +48,29 @@
     <ul class="website-configs-container">
 
     </ul>
+    <button id="clear-config">Clear all configs</button>
     <h2>New Config</h2>
     <form class="config-form">
+        <label for="config-id">Config ID</label>
+        <input type="text" name="config-id" id="config-id" required />
+
         <label for="site-regex">Site (supports regex)</label>
-        <input type="text" name="site-regex" id="site-regex" required>
+        <input type="text" name="site-regex" id="site-regex" required />
 
         <label for="reload-interval">Reload interval</label>
-        <input type="number" name="reload-interval" id="reload-interval" required>
+        <input type="number" name="reload-interval" id="reload-interval" required />
 
         <label for="element-to-check">Element to check</label>
-        <input type="text" name="element-to-check" id="element-to-check" required>
+        <input type="text" name="element-to-check" id="element-to-check" required />
 
         <label for="element-to-act">Element to act</label>
-        <input type="text" name="element-to-act" id="element-to-act" required>
+        <input type="text" name="element-to-act" id="element-to-act" required />
 
         <label for="element-action">Action to perform</label>
-        <input type="text" name="element-action" id="element-action" required>
+        <input type="text" name="element-action" id="element-action" required />
 
         <label for="element-action-arguments">Element action arguments (comma seperated)</label>
-        <input type="text" name="element-action-arguments" id="element-action-arguments">
+        <input type="text" name="element-action-arguments" id="element-action-arguments" />
 
         <button type="submit" id="save-config">Save Config</button>
     </form>

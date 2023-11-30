@@ -2,16 +2,16 @@
     "manifest_version": 3,
     "name": "Sniper",
     "version": "0.0.1",
-    "content_scripts": [
-        {
-            "matches": [
-                "https://old.reddit.com/*"
-            ],
-            "js": [
-                "scripts/content-script.js"
-            ]
-        }
-    ],
+    // "content_scripts": [
+    //     {
+    //         "matches": [
+    //             "https://old.reddit.com/*"
+    //         ],
+    //         "js": [
+    //             "scripts/content-script.js"
+    //         ]
+    //     }
+    // ],
     "background": {
         "service_worker": "service-worker.js",
         "type": "module"
@@ -26,10 +26,18 @@
             ]
         }
     ],
+    "host_permissions": [
+        "<all_urls>"
+    ],
     "permissions": [
         "storage",
-        "background"
+        "background",
+        "sidePanel",
+        "scripting"
     ],
+    "side_panel": {
+        "default_path": "popup/popup.html"
+    },
     "action": {
         "default_popup": "popup/popup.html"
     }

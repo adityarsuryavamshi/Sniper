@@ -23,14 +23,15 @@ function addBackgroundAudioAndPlay() {
 
 
 (async () => {
-    const { config } = await chrome.runtime.sendMessage({ reason: "getConfig" });
-    console.log(`Received Config ${config}`)
-    if (config) {
-        checkAndPerformAction(config.elementToCheck, config.elementToAct, config.action, config.arguments);
-    }
+    addBackgroundAudioAndPlay();
+    // const { config } = await chrome.runtime.sendMessage({ reason: "getConfig" });
+    // console.log(`Received Config ${config}`)
+    // if (config) {
+    //     checkAndPerformAction(config.elementToCheck, config.elementToAct, config.action, config.arguments);
+    // }
 
     setInterval(() => {
         location.reload();
-    }, (config?.reloadIntervalInSeconds ?? 5) * 1000);
+    }, 30 * 1000);
 
 })();
