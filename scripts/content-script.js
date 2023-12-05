@@ -1,10 +1,25 @@
-const checkAndPerformAction = async (elementToCheck, elementToAct, action, arguments = []) => {
-    addBackgroundAudioAndPlay();
-    const checkElement = document.querySelector(elementToCheck);
-    if (checkElement) {
-        const actElement = document.querySelector(elementToAct);
-        actElement[action](...arguments);
+const MIN_RELOAD_INTERVAL_IN_SEC = 30
+
+
+const checkAndPerformAction = async (elementToCheck, elementToAct, action, arguments = [], reloadAble = false) => {
+    if (reloadAble) {
+        // For reload able actions, put a background music to keep the tab active
+        addBackgroundAudioAndPlay();
     }
+    if (elementToCheck) {
+        const checkElements = document.querySelectorAll(elementToCheck);
+        if (checkElements?.length > 0) {
+            if (elementToAct) {
+                const actElements = document.querySelectorAll(elementToAct);
+                if (action) {
+                    for (const elem of actElements) {
+                        elem[action](...arguments)
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 
@@ -23,15 +38,20 @@ function addBackgroundAudioAndPlay() {
 
 
 (async () => {
-    addBackgroundAudioAndPlay();
-    // const { config } = await chrome.runtime.sendMessage({ reason: "getConfig" });
-    // console.log(`Received Config ${config}`)
-    // if (config) {
-    //     checkAndPerformAction(config.elementToCheck, config.elementToAct, config.action, config.arguments);
-    // }
+    const websiteConfigs = await chrome.runtime.sendMessage({ request: 'getConfig' });
+    const reloadIntervals = websiteConfigs
+        .filter(({ reloadInterval }) => Number.isInteger(reloadInterval))
+        .map(({ reloadInterval }) => Number.parseInt(reloadInterval));
 
-    setInterval(() => {
-        location.reload();
-    }, 30 * 1000);
+
+    for (const wc of websiteConfigs) {
+        checkAndPerformAction(wc.elementToCheck, wc.elementToAct, wc.actionToPerform, wc.actionArguments, reloadIntervals?.length > 0);
+    }
+    if (reloadIntervals?.length > 0) {
+        // If there are multiple reload intervals then the smallest one is the one we pick, with enforcing 10 seconds to avoid accidental DOS-ing
+        setInterval(() => {
+            location.reload();
+        }, Math.max(MIN_RELOAD_INTERVAL_IN_SEC, Math.min(...reloadIntervals)) * 1000);
+    }
 
 })();
