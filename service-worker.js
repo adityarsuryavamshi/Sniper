@@ -8,7 +8,7 @@ chrome.runtime.onInstalled.addListener(({ reason }) => {
         // It's due to an update or chrome update or something like that
         // Just ensure that all the scripts are re-registered
         chrome.storage.local.get(sniperWebsiteConfigKey)
-            .then(({ sniperWebsiteConfigs }) => registedConfig(...sniperWebsiteConfigs))
+            .then(({ sniperWebsiteConfigs }) => registerConfigs(...sniperWebsiteConfigs))
     }
 })
 
@@ -32,6 +32,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 break;
             case 'clearConfig':
                 chrome.storage.local.set({ sniperWebsiteConfigs: [] });
+                break;
+
+            case 'deleteConfig':
+                clearConfigFor(message.payload);
                 break;
         }
     } else {
@@ -66,13 +70,14 @@ async function clearConfigFor(configId) {
             sniperWebsiteConfigs.splice(idx, 1)
         }
     }
+    await chrome.storage.local.set({ sniperWebsiteConfigs });
     deregisterConfigs(configId)
 
 }
 
 function deregisterConfigs(...configs) {
     chrome.scripting.unregisterContentScripts({
-        ids: configs.map(c => c.id)
+        ids: configs
     })
 }
 
@@ -98,10 +103,10 @@ async function addNewConfig(websiteConfig) {
     const { sniperWebsiteConfigs } = await chrome.storage.local.get(sniperWebsiteConfigKey);
     sniperWebsiteConfigs.push(websiteConfig);
     chrome.storage.local.set({ sniperWebsiteConfigs });
-    registedConfig(websiteConfig)
+    registerConfigs(websiteConfig)
 }
 
-function registedConfig(...configs) {
+function registerConfigs(...configs) {
     console.log("Received Configs", configs)
     console.log(configs.map(c => c.configID))
 

@@ -21,6 +21,14 @@ function showSiteConfigs(...siteConfigs) {
         spanElements[4].textContent = siteConfig.elementToAct;
         spanElements[5].textContent = siteConfig.actionToPerform;
         spanElements[6].textContent = siteConfig.actionArguments;
+
+
+        const deleteElement = websiteConfigElemet.querySelector('#delete-config');
+        deleteElement.addEventListener('click', async (e) => {
+            e.preventDefault();
+            await chrome.runtime.sendMessage({ request: 'deleteConfig', payload: siteConfig.configID });
+            await getAndShowAllConfigs()
+        })
         websiteConfigContainer.appendChild(websiteConfigElemet);
     }
 }
@@ -45,7 +53,7 @@ document.querySelector('#save-config').addEventListener('click', async (e) => {
         elementToCheck: elementToCheckInput.value,
         elementToAct: elementToActInput.value,
         actionToPerform: actionToPerformInput.value,
-        actionArguments: actionArgumentsInput.value,
+        actionArguments: actionArgumentsInput.value.split(","),
     }
 
 

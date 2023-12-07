@@ -3,7 +3,7 @@ body {
 }
 
 .website-configs-container,
-.wesbite-config {
+.wesbite-config ul {
     list-style: none;
     padding: 0;
 }
@@ -24,6 +24,12 @@ body {
 
 .wesbite-config {
     padding: 0.5rem;
+}
+
+.wesbite-config .config-actions {
+    padding-top: 0.5rem;
+    display: flex;
+    gap: 1rem;
 }
 
 .config-form {

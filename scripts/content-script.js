@@ -13,13 +13,31 @@ const checkAndPerformAction = async (elementToCheck, elementToAct, action, argum
                 const actElements = document.querySelectorAll(elementToAct);
                 if (action) {
                     for (const elem of actElements) {
-                        elem[action](...arguments)
+                        applyFunc(elem, action, arguments);
+                        attributeSet(elem, action, ...arguments);
                     }
                 }
             }
         }
     }
 
+}
+
+
+const applyFunc = function (elem, func, args = []) {
+    try {
+        elem[func](...args)
+    } catch (error) {
+        console.error(`Failed to applyFunc Element: ${elem}, Function: ${func}, Arguments: ${args}, Error : ${error}`)
+    }
+}
+
+const attributeSet = function (elem, property, value) {
+    try {
+        elem[property] = value
+    } catch (error) {
+        console.error(`Failed to attributeSet Element: ${elem}, Property: ${property}, Value: ${value}, Error: ${error}`)
+    }
 }
 
 

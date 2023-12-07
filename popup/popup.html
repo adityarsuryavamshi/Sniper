@@ -10,8 +10,8 @@
 
 <body>
     <template id="saved-site-config">
-        <li>
-            <ul class="wesbite-config">
+        <li class="wesbite-config">
+            <ul>
                 <li>
                     <span class="website-config-label">Config ID: </span>
                     <span class="website-config-value"></span>
@@ -41,6 +41,10 @@
                     <span class="website-config-value"></span>
                 </li>
             </ul>
+            <form>
+                <button type="button" id="delete-config">Delete</button>
+                <button type="button" id="edit-config">Edit</button>
+            </form>
         </li>
     </template>
     <h1>Sniper</h1>
