@@ -10,7 +10,8 @@ The provided selector string is directly passed onto `document.querySelector` an
 ## Screenshots
 
 ### Popup
-![Screenshot of Popup](ss/screenshot_empty.png)
+
+<img src=ss/screenshot_empty.png width=300 alt="Screenshot of Popup">
 
 ### Usage
 
@@ -22,7 +23,7 @@ The provided selector string is directly passed onto `document.querySelector` an
 
 ### Edit Saved Config
 
-![Screenshot of Editing](ss/screenshot_edit_config.png)
+<img src="ss/screenshot_edit_config.png" width=300 alt="Screenshot of Editin">
 
 ## Acknowledgments
 
