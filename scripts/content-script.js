@@ -1,22 +1,18 @@
 const MIN_RELOAD_INTERVAL_IN_SEC = 30
 
 
-const checkAndPerformAction = async (elementToCheck, elementToAct, action, arguments = [], reloadAble = false) => {
+const checkAndPerformAction = async (elementSelector, action, arguments = [], reloadAble = false) => {
     if (reloadAble) {
         // For reload able actions, put a background music to keep the tab active
         addBackgroundAudioAndPlay();
     }
-    if (elementToCheck) {
-        const checkElements = document.querySelectorAll(elementToCheck);
-        if (checkElements?.length > 0) {
-            if (elementToAct) {
-                const actElements = document.querySelectorAll(elementToAct);
-                if (action) {
-                    for (const elem of actElements) {
-                        applyFunc(elem, action, arguments);
-                        attributeSet(elem, action, ...arguments);
-                    }
-                }
+
+    if (elementSelector) {
+        const elems = document.querySelectorAll(elementSelector);
+        for (const elem of elems) {
+            if (action) {
+                applyFunc(elem, action, arguments)
+                attributeSet(elem, action, ...arguments)
             }
         }
     }
@@ -42,7 +38,7 @@ const attributeSet = function (elem, property, value) {
 
 
 function addBackgroundAudioAndPlay() {
-    const backgroundAudio = chrome.runtime.getURL("media/background.ogg");
+    const backgroundAudio = chrome.runtime.getURL("media/rainfall.mp3");
     const audioElem = document.createElement('audio');
     audioElem.src = backgroundAudio;
     audioElem.loop = true;
@@ -63,7 +59,7 @@ function addBackgroundAudioAndPlay() {
 
 
     for (const wc of websiteConfigs) {
-        checkAndPerformAction(wc.elementToCheck, wc.elementToAct, wc.actionToPerform, wc.actionArguments, reloadIntervals?.length > 0);
+        checkAndPerformAction(wc.elementSelector, wc.actionToPerform, wc.actionArguments, reloadIntervals?.length > 0);
     }
     if (reloadIntervals?.length > 0) {
         // If there are multiple reload intervals then the smallest one is the one we pick, with enforcing 10 seconds to avoid accidental DOS-ing

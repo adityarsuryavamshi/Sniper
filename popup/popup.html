@@ -25,11 +25,7 @@
                     <span class="website-config-value"></span>
                 </li>
                 <li>
-                    <span class="website-config-label">Element to check: </span>
-                    <span class="website-config-value"></span>
-                </li>
-                <li>
-                    <span class="website-config-label">Element to act: </span>
+                    <span class="website-config-label">Element Selector: </span>
                     <span class="website-config-value"></span>
                 </li>
                 <li>
@@ -42,8 +38,8 @@
                 </li>
             </ul>
             <form>
-                <button type="button" id="delete-config">Delete</button>
-                <button type="button" id="edit-config">Edit</button>
+                <button class="delete-config">Delete</button>
+                <button class="edit-config">Edit</button>
             </form>
         </li>
     </template>
@@ -64,11 +60,8 @@
         <label for="reload-interval">Reload interval</label>
         <input type="number" name="reload-interval" id="reload-interval" required />
 
-        <label for="element-to-check">Element to check</label>
-        <input type="text" name="element-to-check" id="element-to-check" required />
-
-        <label for="element-to-act">Element to act</label>
-        <input type="text" name="element-to-act" id="element-to-act" required />
+        <label for="element-selector">Element Selector</label>
+        <input type="text" name="element-selector" id="element-selector" required />
 
         <label for="element-action">Action to perform</label>
         <input type="text" name="element-action" id="element-action" required />

@@ -34,6 +34,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 chrome.storage.local.set({ sniperWebsiteConfigs: [] });
                 break;
 
+            case 'updateConfig':
+                updateConfig(message.payload)
+                break;
             case 'deleteConfig':
                 clearConfigFor(message.payload);
                 break;
@@ -99,6 +102,19 @@ async function fetchConfigFor(requestURL) {
     return websiteConfigs;
 }
 
+
+async function updateConfig(updatedWebsiteConfig) {
+    updateConfigs(updatedWebsiteConfig);
+    const { sniperWebsiteConfigs } = await chrome.storage.local.get(sniperWebsiteConfigKey);
+    for (let idx = 0; idx < sniperWebsiteConfigs.length; idx++) {
+        const websiteConfig = sniperWebsiteConfigs[idx];
+        if (websiteConfig.configID === updatedWebsiteConfig.configID) {
+            sniperWebsiteConfigs.splice(idx, 1, updatedWebsiteConfig)
+        }
+    }
+    chrome.storage.local.set({ sniperWebsiteConfigs })
+}
+
 async function addNewConfig(websiteConfig) {
     const { sniperWebsiteConfigs } = await chrome.storage.local.get(sniperWebsiteConfigKey);
     sniperWebsiteConfigs.push(websiteConfig);
@@ -107,12 +123,23 @@ async function addNewConfig(websiteConfig) {
 }
 
 function registerConfigs(...configs) {
-    console.log("Received Configs", configs)
-    console.log(configs.map(c => c.configID))
-
     const registrationSpecs = configs.map(c => {
-        return { id: c.configID, matches: [c.siteRegex], js: ["scripts/content-script.js"] }
+        return {
+            id: c.configID,
+            matches: [c.siteRegex],
+            js: ["scripts/content-script.js"]
+        }
     });
-    console.log(registrationSpecs)
     chrome.scripting.registerContentScripts(registrationSpecs);
+}
+
+function updateConfigs(...configs) {
+    const registrationSpecs = configs.map(c => {
+        return {
+            id: c.configID,
+            matches: [c.siteRegex],
+            js: ["scripts/content-script.js"]
+        }
+    });
+    chrome.scripting.updateContentScripts(registrationSpecs);
 }

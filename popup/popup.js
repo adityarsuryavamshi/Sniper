@@ -1,8 +1,7 @@
 const configIDInput = document.querySelector('#config-id');
 const siteRegexInput = document.querySelector('#site-regex');
 const reloadIntervalInput = document.querySelector('#reload-interval');
-const elementToCheckInput = document.querySelector('#element-to-check');
-const elementToActInput = document.querySelector('#element-to-act');
+const elementSelectorInput = document.querySelector('#element-selector');
 const actionToPerformInput = document.querySelector('#element-action');
 const actionArgumentsInput = document.querySelector('#element-action-arguments');
 
@@ -17,21 +16,63 @@ function showSiteConfigs(...siteConfigs) {
         spanElements[0].textContent = siteConfig.configID;
         spanElements[1].textContent = siteConfig.siteRegex;
         spanElements[2].textContent = siteConfig.reloadInterval;
-        spanElements[3].textContent = siteConfig.elementToCheck;
-        spanElements[4].textContent = siteConfig.elementToAct;
-        spanElements[5].textContent = siteConfig.actionToPerform;
-        spanElements[6].textContent = siteConfig.actionArguments;
+        spanElements[3].textContent = siteConfig.elementSelector;
+        spanElements[4].textContent = siteConfig.actionToPerform;
+        spanElements[5].textContent = siteConfig.actionArguments;
 
 
-        const deleteElement = websiteConfigElemet.querySelector('#delete-config');
+        const deleteElement = websiteConfigElemet.querySelector('.delete-config');
         deleteElement.addEventListener('click', async (e) => {
             e.preventDefault();
             await chrome.runtime.sendMessage({ request: 'deleteConfig', payload: siteConfig.configID });
             await getAndShowAllConfigs()
         })
+
+        const editButton = websiteConfigElemet.querySelector('.edit-config');
+        let inEditMode = false;
+        editButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (!inEditMode) {
+                for (let i = 1; i < spanElements.length; i++) {
+                    elem = spanElements[i];
+                    elem.setAttribute('contentEditable', true);
+                    elem.classList.toggle('editable')
+                    elem.focus();
+                }
+                editButton.textContent = 'Save';
+            } else {
+                for (let i = 1; i < spanElements.length; i++) {
+                    elem = spanElements[i];
+                    elem.setAttribute('contentEditable', false);
+                    elem.classList.toggle('editable')
+                }
+                editButton.textContent = 'Edit';
+
+                const websiteConfig = {
+                    configID: spanElements[0].textContent,
+                    siteRegex: spanElements[1].textContent,
+                    reloadInterval: parseInt(spanElements[2].textContent),
+                    elementSelector: spanElements[3].textContent,
+                    actionToPerform: spanElements[4].textContent,
+                    actionArguments: spanElements[5].textContent.split(","),
+                }
+
+
+                chrome.runtime.sendMessage({ request: "updateConfig", payload: websiteConfig })
+                    .then(() => getAndShowAllConfigs())
+                    .catch(err => console.error(err))
+            }
+            inEditMode = !inEditMode;
+        })
+
+
+
         websiteConfigContainer.appendChild(websiteConfigElemet);
     }
 }
+
+
+
 
 async function getAndShowAllConfigs() {
     // Clear out the existing contents
@@ -50,8 +91,7 @@ document.querySelector('#save-config').addEventListener('click', async (e) => {
         configID: configIDInput.value,
         siteRegex: siteRegexInput.value,
         reloadInterval: parseInt(reloadIntervalInput.value),
-        elementToCheck: elementToCheckInput.value,
-        elementToAct: elementToActInput.value,
+        elementSelector: elementSelectorInput.value,
         actionToPerform: actionToPerformInput.value,
         actionArguments: actionArgumentsInput.value.split(","),
     }
@@ -66,8 +106,7 @@ document.querySelector('#save-config').addEventListener('click', async (e) => {
     configIDInput.value = ""
     siteRegexInput.value = ""
     reloadIntervalInput.value = ""
-    elementToCheckInput.value = ""
-    elementToActInput.value = ""
+    elementSelectorInput.value = ""
     actionToPerformInput.value = ""
     actionArgumentsInput.value = ""
 

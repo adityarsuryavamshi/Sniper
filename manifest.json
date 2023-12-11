@@ -9,7 +9,7 @@
     "web_accessible_resources": [
         {
             "resources": [
-                "media/background.ogg"
+                "media/rainfall.mp3"
             ],
             "matches": [
                 "<all_urls>"

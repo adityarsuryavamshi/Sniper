@@ -1,10 +1,4 @@
-- Content Scripts
-    - Reloads Page every <interval> period of time
-    - It parses the DOM and looks for the given element
-    - If the element is present, it takes the specified action
-    - Post that it notifies
+# Sniper
 
-- Extension Pages
-    - Ability to change interval
-
-- 
+A Manifest V3 extension to perform actions on a web page without `userScripts` permission (And thus w/o developer mode).
+ 
